@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 # pulling in models
@@ -22,7 +22,17 @@ def index(request):
 
 
 def listing(request, listing_id):
-    return render(request, 'listings/listing.html')
+    # if something doesn't exist show 404 page
+    # listing_id is coming from url 'listings/views.py
+    # pk = primary key
+    # get_object_or_404 is from django
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    context = {
+        'listing': listing
+    }
+
+    return render(request, 'listings/listing.html', context)
 
 
 def search(request):
